@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.food.api.domain.model.Restaurant;
+import com.food.api.domain.model.TypePayment;
 
 @Repository
 public interface RestaurantRepository extends CustomJpaRepository<Restaurant, Long>, RestaurantRepositoryQueries,
@@ -17,5 +18,9 @@ public interface RestaurantRepository extends CustomJpaRepository<Restaurant, Lo
 
 	List<Restaurant> findTop2ByNameContaining(String name);
 
+	@Query("FROM Restaurant r join fetch r.kitchen lect join fetch r.typesPayments")
+	List<Restaurant> findAll(); 
+	
+	
 	int countByKitchenId(Long kitchenId);
 }

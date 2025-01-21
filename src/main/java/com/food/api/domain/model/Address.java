@@ -2,8 +2,11 @@ package com.food.api.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -27,6 +30,6 @@ public class Address {
 	private String neighborhood;
 
 	@JoinColumn(name = "address_city_id")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private City city;
 }
