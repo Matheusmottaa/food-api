@@ -18,24 +18,24 @@ import lombok.NoArgsConstructor;
 @Entity
 public class City {
 
-	@Id 
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
-	private Long id; 
-	
+	private Long id;
+
 	@Column(nullable = false)
-	private String name; 
-	
+	private String name;
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private State state; 
-	
-	public City(String name) { 
-		this.name = name; 
+	private State state;
+
+	public City(String name) {
+		this.name = name;
 	}
-	
-	public City(String name, State state) { 
-		this.name = name; 
-		this.state = state; 
-	}	
+
+	public City(String name, State state) {
+		this.name = name;
+		this.state = state;
+	}
 }

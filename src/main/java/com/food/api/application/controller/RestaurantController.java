@@ -29,98 +29,68 @@ import com.food.api.domain.service.RegisterRestaurantService;
 @RestController
 @RequestMapping("/restaurants")
 public class RestaurantController {
-	
+
 	@Autowired
-	private RestaurantRepository restaurantRepository; 
-	
+	private RestaurantRepository restaurantRepository;
+
 	@Autowired
 	private RegisterRestaurantService registerRestaurant;
-	
+
 	@GetMapping
-	public ResponseEntity<List<Restaurant>> list() { 
-		return ResponseEntity.ok(restaurantRepository.findAll()); 
+	public ResponseEntity<List<Restaurant>> list() {
+		return ResponseEntity.ok(restaurantRepository.findAll());
 	}
-	
+
 	@GetMapping("/{restaurantId}")
-	public ResponseEntity<Restaurant> get(@PathVariable Long restaurantId) { 
-		Restaurant restaurant = restaurantRepository.findById(restaurantId).orElse(null); 
-		if(restaurant == null) { 
+	public ResponseEntity<Restaurant> get(@PathVariable Long restaurantId) {
+		Restaurant restaurant = restaurantRepository.findById(restaurantId).orElse(null);
+		if (restaurant == null) {
 			return ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.ok(restaurant); 
+		return ResponseEntity.ok(restaurant);
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<?> add(@RequestBody Restaurant restaurant) { 
-		try { 
-			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(registerRestaurant.save(restaurant));
-		}catch(ResourceNotFoundException e) { 
-			return ResponseEntity.badRequest().body(e.getMessage()); 
+	public ResponseEntity<?> add(@RequestBody Restaurant restaurant) {
+		try {
+			return ResponseEntity.status(HttpStatus.CREATED).body(registerRestaurant.save(restaurant));
+		} catch (ResourceNotFoundException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	
+
 	@PutMapping("/{restaurantId}")
-	public ResponseEntity<?> update(
-				@PathVariable Long restaurantId,
-				@RequestBody Restaurant restaurant) { 
-		try { 
-			Restaurant currentRestaurant = restaurantRepository.findById(restaurantId).orElse(null); 
-			if(currentRestaurant == null) { 
-				return ResponseEntity.notFound().build(); 
+	public ResponseEntity<?> update(@PathVariable Long restaurantId, @RequestBody Restaurant restaurant) {
+		try {
+			Restaurant currentRestaurant = restaurantRepository.findById(restaurantId).orElse(null);
+			if (currentRestaurant == null) {
+				return ResponseEntity.notFound().build();
 			}
-			BeanUtils.copyProperties(restaurant, currentRestaurant, 
-					"id", "typesPayments", "registerDate", "products"); 
-			return ResponseEntity.ok(registerRestaurant.save(currentRestaurant)); 
-		}catch(ResourceNotFoundException e) { 
-			return ResponseEntity.badRequest().body(e.getMessage()); 
+			BeanUtils.copyProperties(restaurant, currentRestaurant, "id", "typesPayments", "registerDate", "products");
+			return ResponseEntity.ok(registerRestaurant.save(currentRestaurant));
+		} catch (ResourceNotFoundException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	
+
 	@PatchMapping("/{restaurantId}")
-	public ResponseEntity<?> parcialUpdate(@PathVariable Long restaurantId, 
-			@RequestBody Map<String, Object> fields) { 
-		Restaurant currentRestaurant = restaurantRepository.findById(restaurantId).orElse(null); 
-		if(currentRestaurant == null) { 
-			return ResponseEntity.notFound().build(); 
+	public ResponseEntity<?> parcialUpdate(@PathVariable Long restaurantId, @RequestBody Map<String, Object> fields) {
+		Restaurant currentRestaurant = restaurantRepository.findById(restaurantId).orElse(null);
+		if (currentRestaurant == null) {
+			return ResponseEntity.notFound().build();
 		}
 		merge(fields, currentRestaurant);
-		return update(restaurantId, currentRestaurant);  
+		return update(restaurantId, currentRestaurant);
 	}
 
 	private void merge(Map<String, Object> sourceFields, Restaurant destRestaurant) {
-		ObjectMapper objectMapper = new ObjectMapper(); 
+		ObjectMapper objectMapper = new ObjectMapper();
 		Restaurant sourceRestaurantPatch = objectMapper.convertValue(sourceFields, Restaurant.class);
-		sourceFields.forEach((keyProp, valueProp) -> { 
+		sourceFields.forEach((keyProp, valueProp) -> {
 			Field field = ReflectionUtils.findField(Restaurant.class, keyProp);
 			field.setAccessible(true);
-			Object newValue = ReflectionUtils.getField(field, sourceRestaurantPatch); 
-			ReflectionUtils.setField(field, destRestaurant, newValue); 
-		}); 
-	}
-	
-	@GetMapping("/teste")
-	public ResponseEntity<List<Restaurant>> filterByDeliveryTax( 
-				@RequestParam(required=false) String name, 
-				@RequestParam(required=false) BigDecimal beginDeliveryTax, 
-				@RequestParam(required=false) BigDecimal endDeliveryTax 
-			){ 
-		System.out.println(name + "\n" + beginDeliveryTax + "\n" + endDeliveryTax); 
-		 return ResponseEntity.ok(restaurantRepository.find(name, beginDeliveryTax, endDeliveryTax));
-	}
-	
-	@GetMapping("/teste2/free-tax")
-	public ResponseEntity<List<Restaurant>> restaurantWithFreeDeliveryTax(@RequestParam String name) {
-		List<Restaurant> response =  restaurantRepository.findWithFreeDeliveryTax(name); 
-		return ResponseEntity.ok(response); 
-	}
-	
-	@GetMapping("/teste3/first")
-	public ResponseEntity<Restaurant> findFirstRestaurant() { 
-		Restaurant restaurant = restaurantRepository.findFirst().orElse(null); 	
-		if(restaurant == null) { 
-			return ResponseEntity.notFound().build(); 
-		}
-		return ResponseEntity.ok(restaurant); 
+			Object newValue = ReflectionUtils.getField(field, sourceRestaurantPatch);
+			ReflectionUtils.setField(field, destRestaurant, newValue);
+		});
 	}
 }

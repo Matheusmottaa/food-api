@@ -24,56 +24,52 @@ import com.food.api.domain.service.RegisterStateService;
 @RestController
 @RequestMapping("/states")
 public class StateController {
-	
+
 	@Autowired
-	private StateRepository stateRepository; 
-	
+	private StateRepository stateRepository;
+
 	@Autowired
-	private RegisterStateService registerState; 
-	
+	private RegisterStateService registerState;
+
 	@GetMapping
-	public ResponseEntity<List<State>> list() { 
-		return ResponseEntity.ok(stateRepository.findAll()); 
+	public ResponseEntity<List<State>> list() {
+		return ResponseEntity.ok(stateRepository.findAll());
 	}
-	
+
 	@GetMapping("/{stateId}")
-	public ResponseEntity<State> get(@PathVariable Long stateId) { 
-		State state = stateRepository.findById(stateId).orElse(null); 
-		if(state == null) { 
-			return ResponseEntity.notFound().build(); 
+	public ResponseEntity<State> get(@PathVariable Long stateId) {
+		State state = stateRepository.findById(stateId).orElse(null);
+		if (state == null) {
+			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok(state);
 	}
-	
-	
+
 	@PostMapping
-	public ResponseEntity<State> add(@RequestBody State state) { 
-		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(registerState.save(state)); 
+	public ResponseEntity<State> add(@RequestBody State state) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(registerState.save(state));
 	}
-	
+
 	@PutMapping("/{stateId}")
-	public ResponseEntity<State> update(
-			@PathVariable Long stateId,
-			@RequestBody State state) { 
-		State currentState = stateRepository.findById(stateId).orElse(null); 
-		if(currentState  == null) { 
-			return ResponseEntity.notFound().build(); 
+	public ResponseEntity<State> update(@PathVariable Long stateId, @RequestBody State state) {
+		State currentState = stateRepository.findById(stateId).orElse(null);
+		if (currentState == null) {
+			return ResponseEntity.notFound().build();
 		}
 		BeanUtils.copyProperties(state, currentState, "id");
-		return ResponseEntity.ok(stateRepository.save(currentState)); 
+		return ResponseEntity.ok(stateRepository.save(currentState));
 	}
-	
+
 	@DeleteMapping("/{stateId}")
-	public ResponseEntity<?> remove(@PathVariable Long stateId) { 
-		try { 
+	public ResponseEntity<?> remove(@PathVariable Long stateId) {
+		try {
 			registerState.delete(stateId);
-			return ResponseEntity.noContent().build(); 
-		}catch(ResourceNotFoundException e) { 
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); 
-		}catch(ResourceInUseException e) { 
-			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage()); 
+			return ResponseEntity.noContent().build();
+		} catch (ResourceNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (ResourceInUseException e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 		}
 	}
-	
+
 }

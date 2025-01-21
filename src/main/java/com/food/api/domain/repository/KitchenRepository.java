@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 import com.food.api.domain.model.Kitchen;
 
 @Repository
-public interface KitchenRepository extends JpaRepository<Kitchen, Long>{
-	List<Kitchen> findByName(String name); 
+public interface KitchenRepository extends JpaRepository<Kitchen, Long> {
+	List<Kitchen> findByName(String name);
+
 	List<Kitchen> findAllByNameContaining(String name);
 }

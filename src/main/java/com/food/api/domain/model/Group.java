@@ -15,6 +15,7 @@ import javax.persistence.Table;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -22,21 +23,20 @@ import lombok.EqualsAndHashCode;
 @Table(name = "TB_GROUP")
 public class Group {
 
-	@Id 
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
-	private Long id; 
-	
+	private Long id;
+
 	@Column(nullable = false)
-	private String name; 
-	
+	private String name;
+
 	@ManyToMany
-	@JoinTable(name = "group_permission", 
-			joinColumns = @JoinColumn(name = "group_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
-	private List<Permission> permissions = new ArrayList<>(); 
-	
-	public Group(String name) { 
-		this.name = name; 
+	@JoinTable(name = "group_permission", joinColumns = @JoinColumn(name = "group_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
+	private List<Permission> permissions = new ArrayList<>();
+
+	public Group(String name) {
+		this.name = name;
 	}
-	
+
 }

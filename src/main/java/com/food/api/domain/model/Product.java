@@ -23,34 +23,34 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
-	private Long id; 
-	
+	private Long id;
+
 	@Column(nullable = false)
-	private String name; 
-	
+	private String name;
+
 	@Column(nullable = false)
-	private String description; 
-	
+	private String description;
+
 	@Column(nullable = false)
-	private BigDecimal price; 
-	
+	private BigDecimal price;
+
 	@Column(nullable = false)
-	private Boolean active; 
-	
+	private Boolean active;
+
 	@ManyToOne
 	@JoinColumn(name = "restaurant_id", nullable = false)
-	private Restaurant restaurant; 
-	
-	public Product(String description, BigDecimal price, Boolean active) { 
-		this.description = description; 
-		this.price = price; 
-		this.active = active; 
+	private Restaurant restaurant;
+
+	public Product(String description, BigDecimal price, Boolean active) {
+		this.description = description;
+		this.price = price;
+		this.active = active;
 	}
-	
-	public Product(String description, BigDecimal price, Boolean active, Restaurant restaurant) { 
-		this.description = description; 
-		this.price = price; 
-		this.active = active; 
-		this.restaurant = restaurant; 
+
+	public Product(String description, BigDecimal price, Boolean active, Restaurant restaurant) {
+		this.description = description;
+		this.price = price;
+		this.active = active;
+		this.restaurant = restaurant;
 	}
 }

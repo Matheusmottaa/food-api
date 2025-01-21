@@ -9,14 +9,14 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.food.api.domain.model.Kitchen;
 
 import lombok.Data;
-import lombok.NonNull; 
+import lombok.NonNull;
 
 @Data
 @JacksonXmlRootElement(localName = "kitchens")
 public class KitchenXmlWrapper {
-	
+
 	@JacksonXmlProperty(localName = "kitchen")
 	@JacksonXmlElementWrapper(useWrapping = false)
 	@NonNull
-	private List<Kitchen> cooks; 
+	private List<Kitchen> cooks;
 }

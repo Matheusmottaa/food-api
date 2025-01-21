@@ -15,16 +15,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 public class TypePayment {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
-	private Long id; 
-	
+	private Long id;
+
 	@Column(nullable = false)
-	private String description; 
-	
-	public TypePayment(String description) { 
-		this.description = description; 
+	private String description;
+
+	public TypePayment(String description) {
+		this.description = description;
 	}
 }

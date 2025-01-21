@@ -25,57 +25,55 @@ import com.food.api.domain.service.RegisterCityService;
 public class CityController {
 
 	@Autowired
-	private CityRepository cityRepository; 
-	
-	@Autowired 
-	private RegisterCityService registerCity; 
-	
+	private CityRepository cityRepository;
+
+	@Autowired
+	private RegisterCityService registerCity;
+
 	@GetMapping
 	public ResponseEntity<List<City>> list() {
-		return ResponseEntity.ok(cityRepository.findAll()); 
+		return ResponseEntity.ok(cityRepository.findAll());
 	}
-	
+
 	@GetMapping("/{cityId}")
-	public ResponseEntity<City> get(@PathVariable Long cityId) { 
-		City city = cityRepository.findById(cityId).orElse(null); 
-		if(city == null) { 
-			return ResponseEntity.notFound().build(); 
+	public ResponseEntity<City> get(@PathVariable Long cityId) {
+		City city = cityRepository.findById(cityId).orElse(null);
+		if (city == null) {
+			return ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.ok(city); 
+		return ResponseEntity.ok(city);
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<?> create(@RequestBody City city) { 
-		try { 
-			return ResponseEntity.status(HttpStatus.CREATED).body(registerCity.save(city)); 
-		}catch(ResourceNotFoundException e) { 
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage()); 
+	public ResponseEntity<?> create(@RequestBody City city) {
+		try {
+			return ResponseEntity.status(HttpStatus.CREATED).body(registerCity.save(city));
+		} catch (ResourceNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
-	
+
 	@PutMapping("/{cityId}")
-	public ResponseEntity<?> update(
-			@PathVariable Long cityId, 
-			@RequestBody City city) { 
-		try { 
-			City currentCity = cityRepository.findById(cityId).orElse(null); 
-			if(currentCity == null) { 
-				return ResponseEntity.notFound().build(); 
+	public ResponseEntity<?> update(@PathVariable Long cityId, @RequestBody City city) {
+		try {
+			City currentCity = cityRepository.findById(cityId).orElse(null);
+			if (currentCity == null) {
+				return ResponseEntity.notFound().build();
 			}
 			BeanUtils.copyProperties(city, currentCity, "id");
-			return ResponseEntity.ok(registerCity.save(currentCity)); 
-		}catch(ResourceNotFoundException e) { 
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage()); 
+			return ResponseEntity.ok(registerCity.save(currentCity));
+		} catch (ResourceNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
-	
+
 	@DeleteMapping("/{cityId}")
-	public ResponseEntity<?> remove(@PathVariable Long cityId) { 
-		try { 
-			registerCity.remove(cityId); 
-			return ResponseEntity.noContent().build(); 
-		}catch(ResourceNotFoundException e) { 
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); 
+	public ResponseEntity<?> remove(@PathVariable Long cityId) {
+		try {
+			registerCity.remove(cityId);
+			return ResponseEntity.noContent().build();
+		} catch (ResourceNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
 }

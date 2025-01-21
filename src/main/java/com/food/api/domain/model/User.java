@@ -17,31 +17,30 @@ import org.hibernate.annotations.CreationTimestamp;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@Data 
+@Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class User {
-	
-	@Id 
+
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@EqualsAndHashCode.Include 
-	private Long id; 
-	
+	@EqualsAndHashCode.Include
+	private Long id;
+
 	@Column(nullable = false)
-	private String name; 
-	
+	private String name;
+
 	@Column(nullable = false)
-	private String email; 
-	
+	private String email;
+
 	@Column(nullable = false)
-	private String password; 
-	
+	private String password;
+
 	@Column(columnDefinition = "datetime")
 	@CreationTimestamp
 	private LocalDateTime createdAt;
-	
+
 	@ManyToMany
-	@JoinTable(name = "user_group", 
-			joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
-	private List<Group> groups; 	
+	@JoinTable(name = "user_group", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
+	private List<Group> groups;
 }

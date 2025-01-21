@@ -20,20 +20,20 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Kitchen {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
-	private Long id; 
-	
+	private Long id;
+
 	@Column(nullable = false)
-	private String name; 
-	
+	private String name;
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "kitchen")
-	private List<Restaurant> restaurants; 
-	
-	public Kitchen(String name) { 
-		this.name = name; 
+	private List<Restaurant> restaurants;
+
+	public Kitchen(String name) {
+		this.name = name;
 	}
 }

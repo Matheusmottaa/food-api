@@ -22,40 +22,40 @@ import com.food.api.domain.repository.RestaurantRepositoryQueries;
 import com.food.api.infrastructure.repository.spec.RestaurantSpecs;
 
 @Repository
-public class RestaurantRepositoryImpl implements RestaurantRepositoryQueries{
+public class RestaurantRepositoryImpl implements RestaurantRepositoryQueries {
 
 	@PersistenceContext
-	private EntityManager manager; 
-	
-	@Autowired @Lazy
-	private RestaurantRepository restaurantRepository; 
+	private EntityManager manager;
+
+	@Autowired
+	@Lazy
+	private RestaurantRepository restaurantRepository;
 
 	@Override
-	public List<Restaurant> find(String name, BigDecimal beginDeliveryTax, BigDecimal endDeliveryTax) { 
-		CriteriaBuilder builder = manager.getCriteriaBuilder(); // Constrói uma instância de criteria Builder. (CriteriaBuilder é um construtor de clausulas). 
-		CriteriaQuery<Restaurant> criteria = builder.createQuery(Restaurant.class); // Criteria Query é um construtor de clásulas
-		Root<Restaurant> rootRestaurant = criteria.from(Restaurant.class); 
-		List<Predicate> predicates = new ArrayList<>(); 
-		if(StringUtils.hasText(name)) { 
-			predicates.add(builder.like(rootRestaurant.get("name"), "%"+name+"%"));  
-		}  
-		if(beginDeliveryTax != null) { 
-			predicates.add(  
-						builder.greaterThanOrEqualTo(rootRestaurant.get("deliveryTax"), beginDeliveryTax));   
+	public List<Restaurant> find(String name, BigDecimal beginDeliveryTax, BigDecimal endDeliveryTax) {
+		CriteriaBuilder builder = manager.getCriteriaBuilder(); // Constrói uma instância de criteria Builder.
+																// (CriteriaBuilder é um construtor de clausulas).
+		CriteriaQuery<Restaurant> criteria = builder.createQuery(Restaurant.class); // Criteria Query é um construtor de
+																					// clásulas
+		Root<Restaurant> rootRestaurant = criteria.from(Restaurant.class);
+		List<Predicate> predicates = new ArrayList<>();
+		if (StringUtils.hasText(name)) {
+			predicates.add(builder.like(rootRestaurant.get("name"), "%" + name + "%"));
 		}
-		if(endDeliveryTax != null) { 
-			predicates.add(
-					builder
-					.lessThanOrEqualTo(rootRestaurant.get("deliveryTax"), endDeliveryTax));
+		if (beginDeliveryTax != null) {
+			predicates.add(builder.greaterThanOrEqualTo(rootRestaurant.get("deliveryTax"), beginDeliveryTax));
 		}
-		criteria.where(predicates.toArray(new Predicate[0])); 
-		return manager.createQuery(criteria)
-				.getResultList(); 
+		if (endDeliveryTax != null) {
+			predicates.add(builder.lessThanOrEqualTo(rootRestaurant.get("deliveryTax"), endDeliveryTax));
+		}
+		criteria.where(predicates.toArray(new Predicate[0]));
+		return manager.createQuery(criteria).getResultList();
 	}
-	
+
 	@Override
 	public List<Restaurant> findWithFreeDeliveryTax(String name) {
 		return restaurantRepository
-				.findAll(RestaurantSpecs.withFreeDeliveryTax().and(RestaurantSpecs.likeName(name)));
+				.findAll(RestaurantSpecs.withFreeDeliveryTax()
+						.and(RestaurantSpecs.likeName(name)));
 	}
-} 
+}

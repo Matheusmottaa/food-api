@@ -7,5 +7,6 @@ import com.food.api.domain.model.Restaurant;
 
 public interface RestaurantRepositoryQueries {
 	List<Restaurant> find(String name, BigDecimal beginDeliveryTax, BigDecimal endDeliveryTax);
-	List<Restaurant> findWithFreeDeliveryTax(String name); 
+
+	List<Restaurant> findWithFreeDeliveryTax(String name);
 }

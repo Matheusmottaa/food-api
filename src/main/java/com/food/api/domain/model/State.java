@@ -15,16 +15,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 public class State {
-	
-	@Id 
+
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
-	private Long id; 
-	
+	private Long id;
+
 	@Column(nullable = false)
-	private String name; 
-	
-	public State(String name) { 
-		this.name = name; 
+	private String name;
+
+	public State(String name) {
+		this.name = name;
 	}
 }

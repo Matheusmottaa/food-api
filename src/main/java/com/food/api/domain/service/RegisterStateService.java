@@ -13,25 +13,22 @@ import com.food.api.domain.repository.StateRepository;
 public class RegisterStateService {
 
 	@Autowired
-	private StateRepository stateRepository; 
-	
-	public State save(State state) { 
-		 return stateRepository.save(state);
+	private StateRepository stateRepository;
+
+	public State save(State state) {
+		return stateRepository.save(state);
 	}
 
-	public void delete(Long stateId) throws ResourceNotFoundException, ResourceInUseException{ 
+	public void delete(Long stateId) throws ResourceNotFoundException, ResourceInUseException {
 		try {
-			if(!stateRepository.existsById(stateId)) { 
-				throw new ResourceNotFoundException(
-						String.format("There is no state with id %d\n", stateId)
-					); 	
+			if (!stateRepository.existsById(stateId)) {
+				throw new ResourceNotFoundException(String.format("There is no state with id %d\n", stateId));
 			}
 			stateRepository.deleteById(stateId);
-		}catch(DataIntegrityViolationException e) { 
+		} catch (DataIntegrityViolationException e) {
 			throw new ResourceInUseException(
-						String.format("The State with ID %d cannot be removed because it is currently in use.\n", stateId)
-					);
+					String.format("The State with ID %d cannot be removed because it is currently in use.\n", stateId));
 		}
 	}
-	
+
 }

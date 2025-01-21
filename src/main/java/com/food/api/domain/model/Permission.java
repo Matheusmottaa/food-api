@@ -14,21 +14,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Permission{
-	
+public class Permission {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
 	private Long id;
-	
+
 	@Column(nullable = false)
-	private String name; 
-	
+	private String name;
+
 	@Column(nullable = false)
-	private String description; 
-	
-	public Permission(String name, String description) { 
-		this.name = name; 
-		this.description = description; 
+	private String description;
+
+	public Permission(String name, String description) {
+		this.name = name;
+		this.description = description;
 	}
 }

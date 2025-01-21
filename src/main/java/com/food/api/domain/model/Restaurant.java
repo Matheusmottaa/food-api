@@ -37,52 +37,51 @@ public class Restaurant {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
-	private Long id; 
-	
+	private Long id;
+
 	@Column(nullable = false)
-	private String name; 
-	
+	private String name;
+
 	@Column(nullable = false)
-	private BigDecimal deliveryTax; 
-	
-	private Boolean active; 
-	
-	private Boolean open; 
+	private BigDecimal deliveryTax;
+
+	private Boolean active;
+
+	private Boolean open;
 
 	@JsonIgnore
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
-	private LocalDateTime registerDate; 
+	private LocalDateTime registerDate;
 
 	@JsonIgnore
 	@UpdateTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
-	private LocalDateTime updatedDate;  
-	
+	private LocalDateTime updatedDate;
+
 	@ManyToOne
-	private Kitchen kitchen; 
-	
+	private Kitchen kitchen;
+
 	@JsonIgnore
 	@Embedded
-	private Address address; 
-	
+	private Address address;
+
 	@JsonIgnore
 	@ManyToMany
-	@JoinTable(name = "restaurant_type_payments", 
-	joinColumns = @JoinColumn(name = "restaurant_id"), inverseJoinColumns = @JoinColumn(name = "type_payment_id"))
+	@JoinTable(name = "restaurant_type_payments", joinColumns = @JoinColumn(name = "restaurant_id"), inverseJoinColumns = @JoinColumn(name = "type_payment_id"))
 	private List<TypePayment> typesPayments = new ArrayList<>();
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "restaurant")
-	private List<Product> products = new ArrayList<>(); 
-		
-	public Restaurant(String name, BigDecimal deliveryTax, Boolean active, Boolean open, 
-				LocalDateTime registerDate, LocalDateTime updatedDate){ 
-		this.name = name; 
-		this.deliveryTax = deliveryTax; 
-		this.active = active; 
-		this.open = open; 
-		this.registerDate = registerDate; 
-		this.updatedDate = updatedDate; 
+	private List<Product> products = new ArrayList<>();
+
+	public Restaurant(String name, BigDecimal deliveryTax, Boolean active, Boolean open, LocalDateTime registerDate,
+			LocalDateTime updatedDate) {
+		this.name = name;
+		this.deliveryTax = deliveryTax;
+		this.active = active;
+		this.open = open;
+		this.registerDate = registerDate;
+		this.updatedDate = updatedDate;
 	}
 }

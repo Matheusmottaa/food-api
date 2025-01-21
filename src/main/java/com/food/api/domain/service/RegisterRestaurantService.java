@@ -14,17 +14,15 @@ public class RegisterRestaurantService {
 
 	@Autowired
 	private RestaurantRepository restaurantRepository;
-	
+
 	@Autowired
-	private KitchenRepository kitchenRepository; 
-	
-	public Restaurant save(Restaurant restaurant) throws ResourceNotFoundException{
-		long kitchenId = restaurant.getKitchen().getId(); 
-		Kitchen kitchen = kitchenRepository.findById(kitchenId)
-				.orElseThrow(()-> new ResourceNotFoundException(
-				  String.format("There is no Kitchen registrantion with code %d\n", kitchenId)
-				)); 
+	private KitchenRepository kitchenRepository;
+
+	public Restaurant save(Restaurant restaurant) throws ResourceNotFoundException {
+		long kitchenId = restaurant.getKitchen().getId();
+		Kitchen kitchen = kitchenRepository.findById(kitchenId).orElseThrow(() -> new ResourceNotFoundException(
+				String.format("There is no Kitchen registrantion with code %d\n", kitchenId)));
 		restaurant.setKitchen(kitchen);
-		return restaurantRepository.save(restaurant); 
+		return restaurantRepository.save(restaurant);
 	}
 }
